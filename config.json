@@ -1,14 +1,14 @@
 {
   "couple": {
-    "name1": "Emma",
-    "name2": "James"
+    "name1": "Iva",
+    "name2": "Evgeni"
   },
   "event": {
     "type": "Wedding",
-    "date": "September 15, 2025",
+    "date": "May 22, 2026",
     "time": "4:00 PM",
-    "venue": "The Garden Estate",
-    "address": "123 Rose Lane, Maplewood City",
+    "venue": "Pasarel Lake Club",
+    "address": "Near Sofia, Bulgaria",
     "dressCode": "Formal Attire"
   },
   "theme": {
@@ -22,7 +22,7 @@
   },
   "content": {
     "heroSubtitle": "We're getting married!",
-    "story": "Our story began on a rainy afternoon in a small coffee shop. What started as a chance encounter over a shared love of books blossomed into a beautiful journey together. Through adventures big and small, laughter and growth, we've built a love that we want to celebrate with all of you.",
+    "story": "From the moment we met, we knew there was something special between us. What began as a spark grew into a deep and beautiful love that has filled our lives with joy, laughter, and endless adventures. Together we've built a bond that grows stronger each day, and now we're ready to begin our greatest adventure yet. We would be honored to have you join us as we celebrate our love and commitment to each other.",
     "storyTitle": "Our Story",
     "detailsTitle": "Celebration Details",
     "rsvpTitle": "RSVP",
