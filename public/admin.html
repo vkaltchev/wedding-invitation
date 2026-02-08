@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - RSVP Responses</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-box h1 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      color: #2c2c2c;
+    }
+
+    .login-box p {
+      color: #666;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .login-box input:focus {
+      outline: none;
+      border-color: #d4a574;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background: #d4a574;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .login-box button:hover {
+      background: #c49664;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.85rem;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* Admin Dashboard */
+    .admin-container {
+      display: none;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .admin-header h1 {
+      font-size: 1.8rem;
+      color: #2c2c2c;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #d4a574;
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: #c49664;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .btn-secondary:hover {
+      background: #f5f5f5;
+    }
+
+    .btn-danger {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-card h3 {
+      font-size: 0.85rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .stat-value {
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #2c2c2c;
+    }
+
+    .stat-card.attending .stat-value { color: #27ae60; }
+    .stat-card.not-attending .stat-value { color: #e74c3c; }
+    .stat-card.maybe .stat-value { color: #f39c12; }
+
+    /* Filter */
+    .filter-bar {
+      background: white;
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .filter-bar select {
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    /* Table */
+    .table-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .responses-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .responses-table th,
+    .responses-table td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .responses-table th {
+      background: #fafafa;
+      font-weight: 500;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+    }
+
+    .responses-table tr:hover {
+      background: #fafafa;
+    }
+
+    .responses-table td {
+      font-size: 0.9rem;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .status-yes {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-no {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .status-maybe {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .message-cell {
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .message-cell:hover {
+      white-space: normal;
+      overflow: visible;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .table-container {
+        overflow-x: auto;
+      }
+
+      .responses-table {
+        min-width: 800px;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div class="login-container" id="loginContainer">
+    <div class="login-box">
+      <h1>Admin Access</h1>
+      <p>Enter the admin password to view RSVP responses</p>
+      <form id="loginForm">
+        <input type="password" id="passwordInput" placeholder="Enter password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p class="error-message" id="loginError">Invalid password. Please try again.</p>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div class="admin-container" id="adminContainer">
+    <header class="admin-header">
+      <h1>RSVP Responses</h1>
+      <div class="header-actions">
+        <a href="/" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          View Invitation
+        </a>
+        <button class="btn btn-primary" id="exportBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Export CSV
+        </button>
+        <button class="btn btn-secondary" id="refreshBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+          Refresh
+        </button>
+        <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Responses</h3>
+        <div class="stat-value" id="statTotal">0</div>
+      </div>
+      <div class="stat-card attending">
+        <h3>Attending</h3>
+        <div class="stat-value" id="statAttending">0</div>
+      </div>
+      <div class="stat-card not-attending">
+        <h3>Not Attending</h3>
+        <div class="stat-value" id="statNotAttending">0</div>
+      </div>
+      <div class="stat-card maybe">
+        <h3>Maybe</h3>
+        <div class="stat-value" id="statMaybe">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Total Guests</h3>
+        <div class="stat-value" id="statTotalGuests">0</div>
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-bar">
+      <label for="statusFilter">Filter by status:</label>
+      <select id="statusFilter">
+        <option value="all">All Responses</option>
+        <option value="yes">Attending</option>
+        <option value="no">Not Attending</option>
+        <option value="maybe">Maybe</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+      <table class="responses-table">
+        <thead>
+          <tr>
+            <th>Guest Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Guests</th>
+            <th>Dietary</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="responsesTableBody">
+        </tbody>
+      </table>
+
+      <div class="empty-state hidden" id="emptyState">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/>
+          <line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+        <h3>No responses yet</h3>
+        <p>RSVP responses will appear here once guests submit them.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

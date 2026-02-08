@@ -1,0 +1,35 @@
+{
+  "couple": {
+    "name1": "Emma",
+    "name2": "James"
+  },
+  "event": {
+    "type": "Wedding",
+    "date": "September 15, 2025",
+    "time": "4:00 PM",
+    "venue": "The Garden Estate",
+    "address": "123 Rose Lane, Maplewood City",
+    "dressCode": "Formal Attire"
+  },
+  "theme": {
+    "primaryColor": "#d4a574",
+    "secondaryColor": "#8b7355",
+    "backgroundColor": "#faf8f5",
+    "textColor": "#2c2c2c",
+    "accentColor": "#e8ddd4",
+    "fontFamily": "'Cormorant Garamond', serif",
+    "heroBackground": "linear-gradient(135deg, #f5f0eb 0%, #e8ddd4 100%)"
+  },
+  "content": {
+    "heroSubtitle": "We're getting married!",
+    "story": "Our story began on a rainy afternoon in a small coffee shop. What started as a chance encounter over a shared love of books blossomed into a beautiful journey together. Through adventures big and small, laughter and growth, we've built a love that we want to celebrate with all of you.",
+    "storyTitle": "Our Story",
+    "detailsTitle": "Celebration Details",
+    "rsvpTitle": "RSVP",
+    "rsvpSubtitle": "Please let us know if you can make it",
+    "closingMessage": "We can't wait to celebrate with you!"
+  },
+  "admin": {
+    "password": "admin123"
+  }
+}
